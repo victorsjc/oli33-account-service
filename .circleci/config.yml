@@ -31,4 +31,4 @@ jobs:
       - run: mvn clean package
 
       # build and push docker image to docker hub
-      - run: mvn clean compile jib:build -Dimage=victorsjc/oli33-account-service:$CIRCLE_BUILD_NUM
+      - run: mvn clean compile jib:build -Dimage=vizawa/oli33-account-service:$CIRCLE_BUILD_NUM
