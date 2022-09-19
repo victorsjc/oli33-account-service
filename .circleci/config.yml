@@ -11,7 +11,10 @@ jobs:
       # git pull
       - checkout
 
-      # setup testing env            
+      # setup testing env     
+      - run:
+          name: Login to DockerHub
+          command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD       
       # Download and cache dependencies
       - restore_cache:
           keys:
