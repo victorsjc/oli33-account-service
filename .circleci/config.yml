@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@8.1.2
 jobs:
-  build:
+  compile_and_package:
     docker:
       # https://circleci.com/docs/2.0/circleci-images/#openjdk
       - image: circleci/openjdk:11.0-jdk-buster
@@ -24,7 +24,10 @@ jobs:
 workflows:
   build_and_push_image:
     jobs:
+      - compile_and_package
       - aws-ecr/build-and-push-image:
+        requires:
+          - compile_and_package
           extra-build-args: '--compress'
           no-output-timeout: 20m
           platform: linux/amd64
