@@ -8,7 +8,6 @@ jobs:
       - image: circleci/openjdk:11.0-jdk-buster
     working_directory: ~/oli33-account-service
     steps:
-      # git pull
       - checkout
       # Download and cache dependencies
       - restore_cache:
@@ -22,20 +21,15 @@ jobs:
       # package into a jar
       - run: mvn clean package
 workflows:
+  version: 2
   build_and_push_image:
     jobs:
       - build
       - aws-ecr/build-and-push-image:
+          repo: 'oli33-account-service'
+          tag: "${CIRCLE_BRANCH}_${CIRCLE_SHA1},${CIRCLE_BRANCH}_latest"
           requires:
             - build
           attach-workspace: true
-          extra-build-args: '--compress'
-          no-output-timeout: 20m
-          platform: linux/amd64
           public-registry: false
           push-image: false
-          workspace-root: ~/oli33-account-service
-          region: "${AWS_DEFAULT_REGION}"
-          registry-id: AWS_ECR_REGISTRY_ID
-          repo: '216340864071.dkr.ecr.sa-east-1.amazonaws.com/oli33-account-service'
-          tag: "${CIRCLE_SHA1}"
