@@ -26,8 +26,8 @@ workflows:
     jobs:
       - build
       - aws-ecr/build-and-push-image:
-        requires:
-          - build
+          requires:
+            - build
           extra-build-args: '--compress'
           no-output-timeout: 20m
           platform: linux/amd64
