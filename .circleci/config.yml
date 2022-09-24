@@ -1,34 +1,16 @@
-version: 2
-jobs:
-  build:
-    docker:
-      # https://circleci.com/docs/2.0/circleci-images/#openjdk
-      - image: circleci/openjdk:11.0-jdk-buster
-
-    working_directory: ~/oli33-account-service
-    
-    steps:
-      # git pull
-      - checkout
-
-      # setup testing env     
-      - run:
-          name: Login to DockerHub
-          command: echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin       
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - oli33-account-service-{{ checksum "pom.xml" }}
-
-      - run: mvn dependency:go-offline
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: oli33-account-service-{{ checksum "pom.xml" }}
-        
-      # package into a jar
-      - run: mvn clean package
-
-      # build and push docker image to docker hub
-      - run: mvn clean compile jib:build -Dimage=vizawa/oli33-account-service:$CIRCLE_BUILD_NUM
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@8.1.2
+workflows:
+  build_and_push_image:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          extra-build-args: '--compress'
+          no-output-timeout: 20m
+          platform: linux/amd64
+          public-registry: false
+          push-image: false
+          region: AWS_DEFAULT_REGION
+          registry-id: AWS_ECR_REGISTRY_ID
+          repo: 216340864071.dkr.ecr.sa-east-1.amazonaws.com/oli33-account-service
+          tag: "${CIRCLE_SHA1}"
