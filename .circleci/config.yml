@@ -22,9 +22,9 @@ jobs:
       # package into a jar
       - run: mvn clean package
       - persist_to_workspace:
-        root: ./
-        paths:
-          - target/
+          root: "~/oli33-account-service"
+          paths:
+            - target/
 workflows:
   version: 2
   build_and_push_image:
