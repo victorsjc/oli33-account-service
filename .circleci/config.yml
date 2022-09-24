@@ -23,6 +23,7 @@ jobs:
       - run: mvn clean package
 workflows:
   build_and_push_image:
+    jobs:
       - aws-ecr/build-and-push-image:
           extra-build-args: '--compress'
           no-output-timeout: 20m
