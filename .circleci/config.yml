@@ -11,6 +11,6 @@ workflows:
           public-registry: false
           push-image: false
           region: "${AWS_DEFAULT_REGION}"
-          registry-id: "${AWS_ECR_REGISTRY_ID}"
+          registry-id: AWS_ECR_REGISTRY_ID
           repo: '216340864071.dkr.ecr.sa-east-1.amazonaws.com/oli33-account-service'
           tag: "${CIRCLE_SHA1}"
