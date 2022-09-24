@@ -2,25 +2,25 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@8.1.2
 jobs:
-  - build:
-      docker:
-        # https://circleci.com/docs/2.0/circleci-images/#openjdk
-        - image: circleci/openjdk:11.0-jdk-buster
-        working_directory: ~/oli33-account-service
-      steps:
-        # git pull
-        - checkout
-        # Download and cache dependencies
-        - restore_cache:
-      keys:
-        - oli33-account-service-{{ checksum "pom.xml" }}
-        - run: mvn dependency:go-offline
-        - save_cache:
+  build:
+    docker:
+      # https://circleci.com/docs/2.0/circleci-images/#openjdk
+      - image: circleci/openjdk:11.0-jdk-buster
+    working_directory: ~/oli33-account-service
+    steps:
+      # git pull
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - oli33-account-service-{{ checksum "pom.xml" }}
+      - run: mvn dependency:go-offline
+      - save_cache:
             paths:
               - ~/.m2
             key: oli33-account-service-{{ checksum "pom.xml" }}
-        # package into a jar
-        - run: mvn clean package
+      # package into a jar
+      - run: mvn clean package
 workflows:
   build_and_push_image:
       - aws-ecr/build-and-push-image:
