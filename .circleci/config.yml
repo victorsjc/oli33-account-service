@@ -31,7 +31,8 @@ workflows:
     jobs:
       - build
       - aws-ecr/build-and-push-image:
-          checkout: false
+          parameters:
+            checkout: false
           repo: 'oli33-account-service'
           tag: "${CIRCLE_BRANCH}_${CIRCLE_SHA1},${CIRCLE_BRANCH}_latest"
           requires:
