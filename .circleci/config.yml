@@ -39,4 +39,4 @@ workflows:
           workspace-root: .
           attach-workspace: true
           public-registry: false
-          push-image: false
+          push-image: true
